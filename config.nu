@@ -68,14 +68,8 @@ const OS_SPECIAL_SCRIPT = if ($nu.os-info.name == "windows") {
 
 source $OS_SPECIAL_SCRIPT
 
-
 mkdir ($nu.data-dir | path join "vendor/autoload")
 
-use ./modules/pathvar.nu 'pathvar workspace'
-$env.STARSHIP_CONFIG = (pathvar workspace | path join starship starship.toml)
-starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
-zoxide init nushell | save -f ($nu.data-dir | path join "vendor/autoload/zoxide.nu")
-# https://mise.jdx.dev/installing-mise.html#nushell
-mise activate nu | save -f ($nu.data-dir | path join "vendor/autoload/mise.nu")
+$env.STARSHIP_CONFIG = ($nu.vendor-autoload-dirs | path join "starship.toml")
 
 # end of file
