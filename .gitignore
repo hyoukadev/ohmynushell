@@ -23,4 +23,8 @@ Cargo.lock
 # 推荐用 plum 东风破维护 rime 配置，这样可以同时使用多份配置，如 moran + kagiroi
 plum/
 
+### NuShell ###
+history.txt
+vendor/
+
 # End of https://www.toptal.com/developers/gitignore/api/rust

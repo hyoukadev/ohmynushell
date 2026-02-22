@@ -1,6 +1,6 @@
-use ../nushell/modules/pathvar.nu *
-use ../nushell/modules/do.nu *
-use ../nushell/modules/files.nu *
+use ../modules/pathvar.nu *
+use ../modules/do.nu *
+use ../modules/files.nu *
 
 let target = do auto {
   _: { pathvar xdg_config_home | path join helix }

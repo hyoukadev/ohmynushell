@@ -1,6 +1,6 @@
-use ../nushell/modules/pathvar.nu *
-use ../nushell/modules/do.nu *
-use ../nushell/modules/files.nu *
+use ../modules/pathvar.nu *
+use ../modules/do.nu *
+use ../modules/files.nu *
 
 # Oh My Tmux installation paths
 let tmux_repo = ($nu.home-path | path join ".tmux")
