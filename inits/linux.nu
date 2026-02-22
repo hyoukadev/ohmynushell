@@ -5,4 +5,4 @@ path add ($nu.home-dir | path join .local bin)
 # /var/lib/flatpak/exports/share
 # /home/ice/.local/share/flatpak/exports/share
 
-# mise activate | save ($nu.default-config-dir | path join mise.nu)
+# mise activate | save ($nu.data-dir | path join mise.nu)

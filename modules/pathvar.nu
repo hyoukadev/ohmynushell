@@ -10,7 +10,7 @@ export def "pathvar xdg_config_home" [] {
 }
 
 export def "pathvar workspace" [] {
-  $nu.default-config-dir | path dirname
+  $nu.data-dir | path dirname
 }
 
 export def "pathvar autoload" [] {
