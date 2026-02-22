@@ -3,11 +3,11 @@ use ../modules/do.nu *
 use ../modules/files.nu *
 
 # Oh My Tmux installation paths
-let tmux_repo = ($nu.home-path | path join ".tmux")
-let conf_link = ($nu.home-path | path join ".tmux.conf")
+let tmux_repo = ($nu.home-dir | path join ".tmux")
+let conf_link = ($nu.home-dir | path join ".tmux.conf")
 let conf_source = ($tmux_repo | path join ".tmux.conf")
 let local_conf_source = ($tmux_repo | path join ".tmux.conf.local")
-let local_conf_target = ($nu.home-path | path join ".tmux.conf.local")
+let local_conf_target = ($nu.home-dir | path join ".tmux.conf.local")
 
 export def install [] {
   # 1. Clone repo if not exists

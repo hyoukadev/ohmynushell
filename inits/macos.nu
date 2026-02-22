@@ -2,7 +2,7 @@ use std/util "path add"
 
 path add "/opt/homebrew/bin"
 path add "/opt/homebrew/sbin"
-path add ($nu.home-path | path join .local bin)
+path add ($nu.home-dir | path join .local bin)
 
 # default settings of v2rayU
 # let local_http_proxy = "http://127.0.0.1:1087"
@@ -19,5 +19,3 @@ path add ($nu.home-path | path join .local bin)
 # $env.HTTP_PROXY = $local_http_proxy
 # $env.HTTPS_PROXY = $local_http_proxy
 # $env.ALL_PROXY = $local_socks_proxy
-
-

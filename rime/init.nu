@@ -3,7 +3,7 @@ use ../modules/do.nu *
 use ../modules/files.nu *
 
 let target = do auto {
-  macos: { $nu.home-path | path join Library Rime moran.custom.yaml }
+  macos: { $nu.home-dir | path join Library Rime moran.custom.yaml }
   _: { pathvar xdg_config_home | path join Rime moran.custom.yaml }
 }
 

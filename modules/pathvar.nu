@@ -4,7 +4,7 @@ export def "pathvar xdg_config_home" [] {
       $env.APPDATA
     }
     "unix" => {
-      $nu.home-path | path join .config
+      $nu.home-dir | path join .config
     }
   }
 }
