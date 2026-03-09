@@ -1,0 +1,3 @@
+theme = Catppuccin Frappe
+command = zsh -c -l "tmux attach || tmux"
+keybind = global:cmd+backquote=toggle_quick_terminal
