@@ -7,7 +7,7 @@ let target = do auto {
 }
 
 let source = do auto {
-  _: { pathvar workspace | path join helix }
+  _: { $nu.data-dir | path join helix }
 }
 
 export def install [] {

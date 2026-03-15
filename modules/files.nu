@@ -59,8 +59,8 @@ export def symlink [link: path, original: path] {
   do auto {
     windows: {
       # Windows native paths require backslashes for mklink
-      let link_win = ($link | str replace -a "/" "\")
-      let orig_win = ($original | str replace -a "/" "\")
+      let link_win = ($link | str replace -a "/" "\\")
+      let orig_win = ($original | str replace -a "/" "\\")
 
       # Determine if source is directory for /D switch
       let is_dir = (($original | path type) == "dir")
