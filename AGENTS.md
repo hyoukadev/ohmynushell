@@ -18,7 +18,7 @@ Converge the current machine to the declared state while preserving machine-spec
 | Runtime manager | mise |
 | Python tools | uv |
 | Theme | Catppuccin Latte |
-| Terminal font | Maple Mono NF CN, 12 pt |
+| Terminal font | Maple Mono NF CN; Windows Terminal 10 pt, Alacritty/Ghostty 12 pt |
 | Terminal (Windows) | Windows Terminal; Alacritty optional |
 | Terminal (macOS/Linux) | Ghostty; Alacritty fallback |
 | Proxy | Disabled by default; explicit `proxy on/off` |
@@ -39,6 +39,10 @@ Converge the current machine to the declared state while preserving machine-spec
 - Windows Terminal: `catppuccin/windows-terminal`, `latte.json` and `latteTheme.json`
 - Yazi: `yazi-rs/flavors:catppuccin-latte`
 - Font: `subframe7536/maple-font`, release asset `MapleMono-NF-CN.zip`
+
+## Optional components
+
+- Rime is outside the core setup manifest and is handled only on explicit user request. Follow [`docs/rime.md`](./docs/rime.md); do not commit downloaded schemas, dictionaries, or Plum data.
 
 ## Agent workflow
 

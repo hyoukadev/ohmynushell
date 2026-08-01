@@ -173,7 +173,7 @@ def "main doctor" [--strict] {
       name: "windows-terminal-settings"
       status: (if ($target | path exists) {
         let settings = (open $target)
-        if $settings.profiles.defaults.font.face? == "Maple Mono NF CN" and $settings.profiles.defaults.colorScheme? == "Catppuccin Latte" {"ok"} else {"invalid"}
+        if $settings.profiles.defaults.font.face? == "Maple Mono NF CN" and $settings.profiles.defaults.font.size? == 10 and $settings.profiles.defaults.colorScheme? == "Catppuccin Latte" {"ok"} else {"invalid"}
       } else {"missing"})
       target: $target
     }]

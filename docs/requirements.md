@@ -61,7 +61,7 @@
 - Starship 使用 `catppuccin_latte`，并能生成 Prompt。
 - Zellij 使用 Latte、Nushell 和 `main` 会话。
 - Yazi 只保留 Latte flavor。
-- 配置中的终端统一选择 Maple Mono NF CN 12pt。
+- 配置中的终端统一选择 Maple Mono NF CN；Windows Terminal 使用 10pt，Alacritty/Ghostty 使用 12pt。
 - Windows Terminal 合并操作保留原 Profile 列表和 GUID。
 - 代理默认不由配置主动设置。
 - `git diff --check` 和对应工具健康检查通过。
