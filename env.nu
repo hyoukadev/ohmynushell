@@ -17,31 +17,24 @@
 # You can remove these comments if you want or leave
 # them for future reference.
 
-const MACOS_SPECIAL_SCRIPT = "./inits/macos.nu"
-const WINDOWS_SPECIAL_SCRIPT = "./inits/windows.nu"
-const ANDROID_SPECIAL_SCRIPT = "./inits/android.nu"
-const LINUX_SPECIAL_SCRIPT = "./inits/linux.nu"
-
-# https://www.nushell.sh/blog/2023-09-19-nushell_0_85_0.html#improvements-to-parse-time-evaluation
-const OS_SPECIAL_SCRIPT = if ($nu.os-info.name == "windows") {
-	$WINDOWS_SPECIAL_SCRIPT
-} else if ($nu.os-info.name == "macos") {
-	$MACOS_SPECIAL_SCRIPT
-} else if ($nu.os-info.name == "android") {
-  $ANDROID_SPECIAL_SCRIPT
-} else {
-  $LINUX_SPECIAL_SCRIPT
-}
-
-# setup System PATH
-source $OS_SPECIAL_SCRIPT
-
 use std/util "path add"
+
+# User-level tool locations shared across platforms.
 path add ($nu.home-dir | path join .cargo bin)
+path add ($nu.home-dir | path join .local bin)
+
+# Homebrew's default Apple Silicon locations.
+if $nu.os-info.name == "macos" {
+  path add /opt/homebrew/bin
+  path add /opt/homebrew/sbin
+}
 # source $"($nu.home-dir)/.cargo/env.nu"
 
 
 $env.EDITOR = "hx"
 $env.config.buffer_editor = "hx"
+
+# Keep Python-based CLIs (such as Tavily) Unicode-safe on Windows.
+$env.PYTHONUTF8 = "1"
 
 # end of file

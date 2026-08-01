@@ -1,0 +1,69 @@
+{
+  version: 1
+  links: [
+    {
+      app: "alacritty"
+      name: "alacritty-platform-windows"
+      platforms: ["windows"]
+      source: ["alacritty" "alacritty.windows.toml"]
+      target: { base: "repo" path: ["alacritty" "alacritty.toml"] }
+    }
+    {
+      app: "alacritty"
+      name: "alacritty-platform-unix"
+      platforms: ["unix"]
+      source: ["alacritty" "alacritty.unix.toml"]
+      target: { base: "repo" path: ["alacritty" "alacritty.toml"] }
+    }
+    {
+      app: "alacritty"
+      name: "alacritty-config"
+      platforms: ["windows" "unix"]
+      source: ["alacritty"]
+      target: { base: "config" path: ["alacritty"] }
+    }
+    {
+      app: "ghostty"
+      name: "ghostty-config"
+      platforms: ["unix"]
+      source: ["ghostty" "config"]
+      target: { base: "config" path: ["ghostty" "config"] }
+    }
+    {
+      app: "helix"
+      name: "helix-config"
+      platforms: ["windows" "unix"]
+      source: ["helix"]
+      target: { base: "config" path: ["helix"] }
+    }
+    {
+      app: "yazi"
+      name: "yazi-theme-windows"
+      platforms: ["windows"]
+      source: ["yazi" "theme.toml"]
+      target: { base: "config" path: ["yazi" "config" "theme.toml"] }
+    }
+    {
+      app: "yazi"
+      name: "yazi-theme-unix"
+      platforms: ["unix"]
+      source: ["yazi" "theme.toml"]
+      target: { base: "config" path: ["yazi" "theme.toml"] }
+    }
+    {
+      app: "zellij"
+      name: "zellij-config-windows"
+      platforms: ["windows"]
+      source: ["zellij"]
+      target: { base: "config" path: ["Zellij" "config"] }
+    }
+    {
+      app: "zellij"
+      name: "zellij-config-unix"
+      platforms: ["unix"]
+      source: ["zellij"]
+      target: { base: "config" path: ["zellij"] }
+    }
+  ]
+  special: ["yazi-packages" "windows-terminal"]
+}

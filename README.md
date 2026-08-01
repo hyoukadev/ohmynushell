@@ -7,13 +7,14 @@ To make cross-platform developing consistent, efficient and more enjoyable, I st
 我日常会使用 Windows、Linux（Native & WSL2）、macOS 进行开发和日常娱乐等活动，也希望跨平台用到的开发工具尽可能保持一致、高效和愉悦的体验。因此，我开始寻找能满足我日常开发工作流的跨平台替代。这里就是我为了达成“learn once， use anywhere”效果所做的选择，我使用了一段时间觉得真不错，也想和你们一起分享这些工具。当然，我还在逐渐完善这套工具集的过程中，其中有些工具在部分平台尚未达到平替效果、或有的工具本身功能还在建设过程中，但都有一定的潜力，我愿意现在就学习和使用他们承担一部分日常使用场景。
 
 这里是所有工具的预览：
-- symlink manager (改进中)
-- rust-lang + cargo
-- nushell
-- helix editor
+- Nushell + Starship
+- Helix Editor
 - `zoxide`, `fzf`, `yazi`, `fd`
-- `mise`, `uv`
-- wezterm
+- `mise`, `uv`, Rust + Cargo
+- Zellij
+- Ghostty（macOS/Linux）、Alacritty、Windows Terminal
+- Catppuccin Latte + Maple Mono NF CN
+- 跨平台配置链接与 Agent 操作规范
 
 本文不会包含习以为常的跨平台开发工具，如：
 - git
@@ -21,10 +22,10 @@ To make cross-platform developing consistent, efficient and more enjoyable, I st
 - vim & emacs
 - ...
 
-也不会包含非跨全平台的开发工具，如：
-- tmux & itmux & zellij
-- bash & zsh & fish shell
-- Cygwin & MSYS2 & MinGW
+不会把以下平台专属工具作为核心依赖：
+- tmux、iTerm2
+- bash、zsh、fish
+- Cygwin、MSYS2、MinGW
 - ...
 
 ## 系统配置
@@ -63,7 +64,7 @@ To make cross-platform developing consistent, efficient and more enjoyable, I st
   - 🟩 wezterm
 - 🎯 跨平台面向未来和 AI 的配置，满足自动化开发需求
 
-### NuShell + Oh My Posh
+### Nushell + Starship
 
 🔶为什么我选择使用 NuShell
 
@@ -76,8 +77,20 @@ To make cross-platform developing consistent, efficient and more enjoyable, I st
 - ✅ WSL2 需要在 WSL2 设置中对 Network 选上 Mirror
 - ✅ Windows 下：1️⃣开启魔法应用的 Tun 功能 2️⃣或者手动设置 `$env.http_proxy` 等环境变量
 
-✅ nushell 作为默认 shell 程序
+✅ Nushell 作为默认 shell 程序
 ![nushell as Windows Terminal default shell](./docs/assets/nushell_as_windows_terminal_default_profile.png)
+
+## 配置方式
+
+仓库记录期望状态、官方来源、平台差异和验证方式。自动化脚本保持幂等，AI Agent 可以根据当前机器实际情况一次性完成安装、链接、定向合并和验证，而不是盲目执行固定的一键脚本。
+
+- Agent 操作规范：[`AGENTS.md`](./AGENTS.md)
+- 架构设计：[`docs/design.md`](./docs/design.md)
+- 配置入口：`nu setup.nu apply [app]`
+- 健康检查：`nu setup.nu doctor --strict`
+- 软链映射唯一来源：[`manifest.nuon`](./manifest.nuon)
+- 代理默认关闭；需要时运行 `proxy on`，用完运行 `proxy off`
+- 统一外观：Catppuccin Latte + Maple Mono NF CN
 
 ### Yazi
 

@@ -4,5 +4,5 @@ import = [
 ]
 
 [terminal.shell]
-args = ["-l"]
+args = ["-l", "-c", "zellij"]
 program = "nu"

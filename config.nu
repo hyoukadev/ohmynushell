@@ -49,27 +49,17 @@ if ($env.TERM_PROGRAM? == "WezTerm") {
 source ./helpers/git.nu
 source ./helpers/python_uv.nu
 source ./helpers/normal.nu
-source ./themes/catppuccin_frappe.nu
+source ./helpers/proxy.nu
+source ./themes/catppuccin_latte.nu
 
 
 # setup alias
 alias cls = clear
 
 
-const MACOS_SPECIAL_SCRIPT = "./helpers/macos.nu"
-const WINDOWS_SPECIAL_SCRIPT = "./helpers/windows.nu"
-
-# https://www.nushell.sh/blog/2023-09-19-nushell_0_85_0.html#improvements-to-parse-time-evaluation
-const OS_SPECIAL_SCRIPT = if ($nu.os-info.name == "windows") {
-	$WINDOWS_SPECIAL_SCRIPT
-} else if ($nu.os-info.name == "macos") {
-	$MACOS_SPECIAL_SCRIPT
-}
-
-source $OS_SPECIAL_SCRIPT
-
 mkdir ($nu.data-dir | path join "vendor/autoload")
 
-$env.STARSHIP_CONFIG = ($nu.vendor-autoload-dirs | path join "starship.toml")
+$env.STARSHIP_CONFIG = ($nu.data-dir | path join starship starship.toml)
+$env.config.render_right_prompt_on_last_line = true
 
 # end of file

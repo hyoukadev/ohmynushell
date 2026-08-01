@@ -1,43 +1,67 @@
-# 需求文档：基于 Nushell 的配置软链管理系统
+# 需求文档：跨平台一致开发环境
 
-## 1. 背景
-项目原有的配置文件符号链接（Symlink）生成逻辑由 Rust 实现 (`src/main.rs`)。为了提高配置的可维护性，降低修改门槛（无需编译 Rust 代码），并充分利用项目中已引入的 Nushell 工具链，现计划移除 Rust 实现，改用 Nushell 脚本来实现跨平台的配置同步与链接管理。
+## 1. 范围
 
-## 2. 目标
-构建一套轻量级、模块化且跨平台的配置管理脚本系统，使得添加新应用配置或修改现有路径映射变得简单直观。
+配置系统覆盖 Windows、macOS、Linux/WSL 和 Android/Termux，目标是让核心命令行工具、编辑器、终端复用相同配置与操作习惯。
 
-## 3. 功能需求
+## 2. 功能需求
 
-### 3.1 核心功能
-*   **移除 Rust 和 Just 依赖**：完全废除 `src/` 目录、`Cargo.toml`、`pathes.toml` 以及 `justfile`，由 Nushell 脚本接管所有逻辑。
-*   **创建符号链接**：能够将仓库内的配置文件或目录链接到操作系统的标准配置路径（如 `~/.config` 或 `%APPDATA%`）。
-*   **支持目录与文件**：支持对整个文件夹（如 `nvim/`）或单个文件（如 `.gitconfig`）创建链接。
-*   **备份机制**：当目标路径已存在实体文件（非链接）时，自动将其重命名备份（如 `.bak`），避免数据丢失。
-*   **幂等性**：
-    *   如果链接已正确存在，跳过操作。
-    *   如果链接存在但指向错误，更新链接。
-    *   多次运行脚本不应产生副作用。
+### 2.1 核心工具
 
-### 3.2 跨平台兼容
-*   **路径解析**：
-    *   自动处理 Windows (`\`) 与 Unix (`/`) 的路径分隔符差异。
-    *   动态获取系统标准路径（使用 `pathvar` 逻辑）：
-        *   **Windows**: 使用 `%APPDATA%` (Roaming) 或 `%LOCALAPPDATA%`。
-        *   **macOS**: 使用 `~/Library/Application Support` 或 `~/.config`。
-        *   **Linux**: 遵循 XDG Base Directory 规范 (`~/.config`)。
-*   **底层命令适配**：
-    *   **Windows**: 使用 `mklink` (需处理文件与目录的区别 `mklink /D`)。
-    *   **Unix**: 使用 `ln -s`。
+- Nushell 作为交互 Shell。
+- Starship 作为 Prompt。
+- Zellij 作为终端复用器。
+- Helix、Yazi、mise、uv、zoxide 等使用跨平台配置。
+- 视觉统一为 Catppuccin Latte 和 Maple Mono NF CN。
 
-### 3.3 模块化架构
-*   每个应用（如 Helix, Nushell, Alacritty）在各自的目录下拥有独立的 `init.nu` 脚本。
-*   `init.nu` 负责定义该应用特定的源路径和目标路径。
-*   公共逻辑（路径获取、链接创建函数）抽取到 `nushell/modules/` 中复用。
+### 2.2 配置管理
 
-### 3.4 统一入口
-*   通过 Nushell 脚本（如 `task.nu`）提供简单的命令来一键安装所有配置及执行其他任务。
-*   支持单独运行某个应用的配置脚本以便调试。
+- 被 Git 跟踪的文件是期望状态的唯一来源。
+- 每台机器生成的绝对路径脚本放入 `vendor/autoload/` 并忽略。
+- `manifest.nuon` 集中声明目录和文件配置，`setup.nu` 提供幂等 apply 与 doctor，不生成持久 `.bak`。
+- 所有平台仅使用 Symbolic Link；Windows 权限不足时明确失败，不允许降级为 Junction、HardLink 或 Copy。
+- Windows Terminal 必须合并配置片段，不能覆盖设备相关 Profile。
 
-## 4. 非功能需求
-*   **易用性**：新增一个应用配置时，只需复制现有模板并修改路径变量即可。
-*   **可读性**：代码应清晰，并在执行过程中输出友好的日志（使用 Emoji 区分状态：✅ 成功, 🔄 更新, 📦 备份）。
+### 2.3 平台适配
+
+- Windows 配置目录使用 `%APPDATA%` 或 `%LOCALAPPDATA%`。
+- Linux 遵循 XDG 目录规范。
+- macOS 根据工具约定使用 `~/.config` 或 `~/Library`。
+- 不适用于当前平台的工具必须明确跳过。
+- 平台判断不得产生空脚本路径或启动解析错误。
+
+### 2.4 网络与环境变量
+
+- 代理不得在启动时无条件启用。
+- 提供 `proxy on`、`proxy off`、`proxy status`。
+- PATH 生成文件不得固化 AI Agent、MSYS 或项目临时目录。
+- Windows Python CLI 使用 UTF-8 模式。
+
+### 2.5 Agent 支持
+
+- `AGENTS.md` 必须记录目标状态、官方来源、平台差异、安装顺序和验证命令。
+- Agent 在操作前检查环境和 Git 状态。
+- 第三方资源必须来自官方仓库并进行校验。
+- 修改真实用户配置前必须说明破坏性影响；优先无损合并，禁止遗留持久 `.bak`。
+- 完成报告必须区分已验证、静态验证、跳过和失败项目。
+
+## 3. 非功能需求
+
+- **可读**：配置和模块命名直接表达目标。
+- **幂等**：重复安装不产生额外文件或破坏源文件。
+- **安全**：链接管理不得解析目标链接后误操作源目录。
+- **可移植**：仓库不能依赖某台机器的绝对 PATH 快照。
+- **可审查**：主题文件可以与官方源逐字节比较。
+- **可验证**：Nushell、TOML、JSON、KDL 及工具运行时均有检查方式。
+
+## 4. 验收标准
+
+- Nushell 配置在支持的平台上无解析错误。
+- `manifest.nuon` 可以解析，且 `nu setup.nu doctor --strict` 通过。
+- Starship 使用 `catppuccin_latte`，并能生成 Prompt。
+- Zellij 使用 Latte、Nushell 和 `main` 会话。
+- Yazi 只保留 Latte flavor。
+- 配置中的终端统一选择 Maple Mono NF CN 12pt。
+- Windows Terminal 合并操作保留原 Profile 列表和 GUID。
+- 代理默认不由配置主动设置。
+- `git diff --check` 和对应工具健康检查通过。

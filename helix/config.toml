@@ -8,7 +8,7 @@
 # https://github.com/helix-editor/helix/pull/5748
 # https://github.com/helix-editor/helix/issues/5919
 
-theme = "catppuccin_frappe"
+theme = "catppuccin_latte"
 
 
 [editor]

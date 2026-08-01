@@ -4,5 +4,5 @@ import = [
 ]
 
 [terminal.shell]
-args = ["-l", "-c", "tmux attach || tmux"]
+args = ["-l", "-c", "zellij"]
 program = "nu"

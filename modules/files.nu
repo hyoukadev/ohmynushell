@@ -1,12 +1,51 @@
-use ./do.nu *
-
 def log [emoji: string, msg: string] {
   print $"($emoji) ($msg)"
 }
 
+def is-symbolic-link [link: path] {
+  let entry = (ls -a ($link | path dirname) | where name == $link | first)
+  if $entry.type != "symlink" {
+    return false
+  }
+  if $nu.os-info.family == "windows" {
+    let link_type = (^powershell -NoProfile -Command $"$ErrorActionPreference = 'Stop'; Get-Item -LiteralPath '($link)' -Force | Select-Object -ExpandProperty LinkType" | str trim)
+    return ($link_type == "SymbolicLink")
+  }
+  true
+}
+
+def assert-symlink-capability [original: path] {
+  if $nu.os-info.family == "windows" {
+    let probe = ($env.TEMP | path join $"nu-symlink-probe-(random chars -l 12)")
+    ^powershell -NoProfile -Command $"$ErrorActionPreference = 'Stop'; New-Item -ItemType SymbolicLink -Path '($probe)' -Target '($original)' | Out-Null"
+    rm $probe
+  }
+}
+
+export def "symlink status" [link: path, original: path] {
+  let link = ($link | path expand --no-symlink)
+  let original = ($original | path expand)
+  if not ($original | path exists) {
+    return {status: "source-missing", link: $link, source: $original}
+  }
+  if not ($link | path exists) {
+    return {status: "missing", link: $link, source: $original}
+  }
+  if not (is-symbolic-link $link) {
+    return {status: "wrong-type", link: $link, source: $original}
+  }
+  let current = ($link | path expand)
+  if $current != $original {
+    return {status: "wrong-target", link: $link, source: $original, current: $current}
+  }
+  {status: "ok", link: $link, source: $original}
+}
+
 export def symlink [link: path, original: path] {
   # Expand paths to absolute to avoid relative path confusion
-  let link = ($link | path expand)
+  # Never resolve the destination itself: doing so would turn an existing
+  # symlink into its source path and could move/delete the source directory.
+  let link = ($link | path expand --no-symlink)
   let original = ($original | path expand)
 
   if not ($original | path exists) {
@@ -24,27 +63,25 @@ export def symlink [link: path, original: path] {
     let type = $entry.type
 
     if $type == "symlink" {
-      # Check if it points to the correct location
-      # `path expand` on the link resolves to the real target
+      # On Windows, `ls` reports Junctions as symlinks too. Require the exact
+      # SymbolicLink reparse type rather than accepting a Junction as converged.
+      let correct_type = (is-symbolic-link $link)
       let current_target = ($link | path expand)
 
-      if $current_target == $original {
+      if $correct_type and $current_target == $original {
         log "✅" $"Already linked: ($link)"
         return
       }
 
+      # Check capability before removing an existing reparse point.
+      assert-symlink-capability $original
       log "🔄" $"Updating link: ($link)"
-      # Remove old symlink
       rm $link
     } else {
-      # Backup existing file/directory
-      let backup = $"($link).bak"
-      if ($backup | path exists) {
-        # Remove old backup if exists
-        rm -r $backup
-      }
-      log "📦" $"Backing up: ($link) -> ($backup)"
-      mv $link $backup
+      # Check capability before removing an existing real file or directory.
+      assert-symlink-capability $original
+      log "🗑️" $"Removing existing target: ($link)"
+      rm -r $link
     }
   }
 
@@ -54,29 +91,15 @@ export def symlink [link: path, original: path] {
     mkdir $parent
   }
 
+  # Also covers the case where the destination did not exist.
+  assert-symlink-capability $original
   log "🔗" $"Creating link: ($link) -> ($original)"
 
-  do auto {
-    windows: {
-      # Windows native paths require backslashes for mklink
-      let link_win = ($link | str replace -a "/" "\\")
-      let orig_win = ($original | str replace -a "/" "\\")
-
-      # Determine if source is directory for /D switch
-      let is_dir = (($original | path type) == "dir")
-
-      # Use constructed command string for cmd /c to handle spaces correctly
-      # mklink syntax: mklink [[/D] | [/H] | [/J]] Link Target
-      if $is_dir {
-        cmd /c $"mklink /D \"($link_win)\" \"($orig_win)\""
-      } else {
-        cmd /c $"mklink \"($link_win)\" \"($orig_win)\""
-      }
-    },
-    _: {
-      # Unix (macOS/Linux)
-      # ln -s target link_name
-      ln -s $original $link
-    }
+  if $nu.os-info.family == "windows" {
+    # Windows requires Developer Mode or elevation for symbolic links.
+    # Fail explicitly rather than changing link semantics.
+    ^powershell -NoProfile -Command $"New-Item -ItemType SymbolicLink -Path '($link)' -Target '($original)' | Out-Null"
+  } else {
+    ^ln -s $original $link
   }
 }
