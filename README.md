@@ -123,6 +123,7 @@ nu setup.nu doctor --strict
 - [架构设计](./docs/design.md)
 - [需求与验收标准](./docs/requirements.md)
 - [Symbolic Link 安全设计](./docs/symlink_manager.md)
+- [Helix 语言环境](./docs/helix.md)
 - [Rime 可选配置](./docs/rime.md)
 
 ## License

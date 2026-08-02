@@ -42,6 +42,7 @@ Converge the current machine to the declared state while preserving machine-spec
 
 ## Optional components
 
+- Helix language tooling is described in [`docs/helix.md`](./docs/helix.md). Install platform-appropriate packages until the declared executable names pass doctor; do not restore a fixed batch installer.
 - Rime is outside the core setup manifest and is handled only on explicit user request. Follow [`docs/rime.md`](./docs/rime.md); do not commit downloaded schemas, dictionaries, or Plum data.
 
 ## Agent workflow

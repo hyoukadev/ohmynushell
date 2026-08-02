@@ -18,16 +18,10 @@
 # ✅ EditorConfig https://github.com/helix-editor/helix/pull/13056
 # 
 
+# Helix already provides the default Tinymist, Taplo, Lua and Markdown
+# language-server declarations. Only repository-specific overrides live here.
+
 # = Specific Languages
-# == Typst
-[language-server.tinymist]
-command = "tinymist"
-
-[[language]]
-name = "typst"
-language-servers = ["tinymist"]
-
-
 # == YAML
 [language-server.yaml-language-server.config.yaml]
 format = { enable = true }

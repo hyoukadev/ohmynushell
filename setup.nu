@@ -142,6 +142,34 @@ def "main apply" [app?: string] {
 }
 
 
+def executable-status [command: string, --verify] {
+  if (which $command | is-empty) {
+    return "missing"
+  }
+  if $verify {
+    let result = (do { run-external $command "--version" } | complete)
+    if $result.exit_code != 0 {
+      return "broken"
+    }
+  }
+  "ok"
+}
+
+
+def helix-tool-checks [] {
+  [
+    {app: "helix", name: "rust-analyzer", status: (executable-status rust-analyzer --verify), target: "rust-analyzer"}
+    {app: "helix", name: "taplo", status: (executable-status taplo), target: "taplo"}
+    {app: "helix", name: "tinymist", status: (executable-status tinymist), target: "tinymist"}
+    {app: "helix", name: "lua-language-server", status: (executable-status lua-language-server), target: "lua-language-server"}
+    {app: "helix", name: "typescript-language-server", status: (executable-status typescript-language-server), target: "typescript-language-server"}
+    {app: "helix", name: "vscode-eslint-language-server", status: (executable-status vscode-eslint-language-server), target: "vscode-eslint-language-server"}
+    {app: "helix", name: "yaml-language-server", status: (executable-status yaml-language-server), target: "yaml-language-server"}
+    {app: "helix", name: "markdown-oxide", status: (executable-status markdown-oxide), target: "markdown-oxide"}
+  ]
+}
+
+
 def "main doctor" [--strict] {
   let links = (selected-links | each {|entry|
     let result = (symlink status (resolve-target $entry) (resolve-source $entry))
@@ -178,7 +206,7 @@ def "main doctor" [--strict] {
       target: $target
     }]
   } else { [] }
-  let checks = ($links | append $starship_check | append $yazi_check | append $windows_terminal_checks)
+  let checks = ($links | append $starship_check | append $yazi_check | append $windows_terminal_checks | append (helix-tool-checks))
   print $checks
 
   let failures = ($checks | where status != "ok")
