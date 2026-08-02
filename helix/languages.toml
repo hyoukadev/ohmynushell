@@ -65,4 +65,16 @@ language-servers = [
   "vscode-eslint-language-server",
 ]
 
+# == Go
+[[language]]
+name = "go"
+auto-format = true                  # 保存时自动格式化
+language-servers = ["gopls"]
+formatter = { command = "goimports" } # 排版 + 自动增删/整理 import
+
+[language-server.gopls.config]
+"staticcheck" = true               # gopls 内置 staticcheck 静态检查
+"semanticTokens" = true            # 语义高亮
+"hints" = { "assignVariableTypes" = true, "compositeLiteralFields" = true, "constantValues" = true, "functionTypeParameters" = true, "parameterNames" = true, "rangeVariableTypes" = true } # inlay hints，嫌吵可整行删
+
 # end of file
