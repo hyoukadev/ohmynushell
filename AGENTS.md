@@ -15,7 +15,7 @@ Converge the current machine to the declared state while preserving machine-spec
 | Multiplexer | Zellij, session `main` |
 | Editor | Helix |
 | File manager | Yazi, with Helix as the text opener |
-| Diff viewer | Delta, Catppuccin Latte light theme |
+| Diff viewer | Delta by default; Difftastic on demand; light backgrounds |
 | Git UI | Uncoupled; LazyGit is installed for evaluation |
 | Runtime manager | mise |
 | Python tools | uv |
@@ -81,6 +81,19 @@ Converge the current machine to the declared state while preserving machine-spec
    `manifest.nuon` is the only source of symbolic-link mappings. Do not add per-application installer scripts.
 7. `setup.nu` handles the two non-link operations: Yazi flavor convergence and Windows Terminal settings merge. Never replace the complete Windows Terminal settings file because profile GUIDs are device-specific.
 8. Validate before reporting completion.
+
+## Code retrieval workflow
+
+Use the cheapest precise tool before expanding context:
+
+1. Discover candidate paths with `fd` or `rg --files`.
+2. Search exact text and regular expressions with `rg`.
+3. Search syntax shapes and plan codemods with `ast-grep`.
+4. Use language-server symbol definitions and references when lexical matches are ambiguous.
+5. Inspect intent and regressions with Tig, `git blame`, `git log -L`, `git log -S`, or `git log -G` before rewriting compatibility logic.
+6. Read only the relevant implementation, tests, and configuration, then validate the smallest affected scope before the full doctor.
+
+Do not package the whole repository for a local Agent by default. Do not add Serena, Repomix, Sourcegraph, or another indexer without a measured retrieval benefit and an explicit privacy review.
 
 ## Platform behavior
 

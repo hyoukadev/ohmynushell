@@ -192,6 +192,9 @@ def workspace-tool-checks [] {
     {app: "workspace", name: "yazi", status: (executable-status yazi), target: "yazi"}
     {app: "workspace", name: "lazygit", status: (executable-status lazygit), target: "lazygit"}
     {app: "workspace", name: "delta", status: (executable-status delta), target: "delta"}
+    {app: "workspace", name: "difftastic", status: (executable-status difft), target: "difft"}
+    {app: "workspace", name: "ast-grep", status: (executable-status ast-grep), target: "ast-grep"}
+    {app: "workspace", name: "tig", status: (executable-status tig), target: "tig"}
     {app: "workspace", name: "ripgrep", status: (executable-status rg), target: "rg"}
     {app: "workspace", name: "fd", status: (executable-status fd), target: "fd"}
     {app: "workspace", name: "zoxide", status: (executable-status zoxide), target: "zoxide"}

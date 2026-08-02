@@ -12,6 +12,7 @@ theme = "catppuccin_latte"
 
 
 [editor]
+shell = ["nu", "--no-config-file", "-c"]
 
 # for the theme under WSL2 in Windows Terminal may occur into error:
 # https://github.com/helix-editor/helix/discussions/8031
@@ -40,5 +41,8 @@ hidden = false
 
 # Keep keybindings platform-neutral. Yazi integration that relies on /tmp,
 # /dev/tty, rm, or cat is intentionally not configured here.
+
+[keys.normal.space]
+B = ':echo %sh{let file = ("%{buffer_name}" | path expand); let probe = (git -C ($file | path dirname) rev-parse --show-toplevel | complete); if $probe.exit_code != 0 { print "Not in a Git repository" } else { let root = ($probe.stdout | str trim); let relative = ($file | path relative-to $root); git -C $root blame -L %{cursor_line},+1 -- $relative }}'
 
 # end of file

@@ -33,6 +33,7 @@ if $nu.os-info.name == "macos" {
 
 $env.EDITOR = "hx"
 $env.config.buffer_editor = "hx"
+$env.DFT_BACKGROUND = "light"
 
 # Yazi requires file(1) for MIME detection. Git for Windows ships it outside
 # the normal Windows PATH, so derive its location from the active Git binary.
