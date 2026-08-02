@@ -11,6 +11,7 @@
 | 分类 | 工具 |
 |---|---|
 | 核心 | Nushell、Starship、Zellij、Helix、Yazi、mise、uv、zoxide |
+| 编辑辅助 | ripgrep、fd、Delta；LazyGit 待评估 |
 | 终端 | Windows Terminal（Windows）、Ghostty（macOS/Linux）、Alacritty（可选） |
 | 外观 | Catppuccin Latte、Maple Mono NF CN（Windows Terminal 10pt） |
 | 可选 | Rime |

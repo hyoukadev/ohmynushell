@@ -14,7 +14,9 @@ Converge the current machine to the declared state while preserving machine-spec
 | Prompt | Starship |
 | Multiplexer | Zellij, session `main` |
 | Editor | Helix |
-| File manager | Yazi |
+| File manager | Yazi, with Helix as the text opener |
+| Diff viewer | Delta, Catppuccin Latte light theme |
+| Git UI | Uncoupled; LazyGit is installed for evaluation |
 | Runtime manager | mise |
 | Python tools | uv |
 | Theme | Catppuccin Latte |
@@ -27,7 +29,7 @@ Converge the current machine to the declared state while preserving machine-spec
 
 - The repository root is the Nushell data/config directory (`$nu.data-dir`).
 - `manifest.nuon` declares all symbolic-link mappings; `setup.nu` is the only apply/doctor entry point.
-- Tracked files are declarative sources. Files below `vendor/autoload/` are generated per machine and intentionally ignored.
+- Tracked files are declarative sources. Files below `vendor/autoload/` and Yazi's generated `package.toml`, `flavors/`, and `plugins/` are machine-managed and intentionally ignored.
 - Never commit history, credentials, tokens, machine-specific profile GUIDs, or generated activation snapshots.
 - Before changing a third-party theme, fetch the official source with `gh` and compare it instead of recreating colors manually.
 
@@ -42,7 +44,7 @@ Converge the current machine to the declared state while preserving machine-spec
 
 ## Optional components
 
-- Helix language tooling is described in [`docs/helix.md`](./docs/helix.md). Install platform-appropriate packages until the declared executable names pass doctor; do not restore a fixed batch installer.
+- Helix language tooling and its Yazi/Git workflow are described in [`docs/helix.md`](./docs/helix.md). Install platform-appropriate packages until the declared executable names pass doctor; do not restore a fixed batch installer or add Zellij shortcuts before the user selects the final tools.
 - Rime is outside the core setup manifest and is handled only on explicit user request. Follow [`docs/rime.md`](./docs/rime.md); do not commit downloaded schemas, dictionaries, or Plum data.
 
 ## Agent workflow

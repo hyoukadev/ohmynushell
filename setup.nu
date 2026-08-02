@@ -170,6 +170,36 @@ def helix-tool-checks [] {
 }
 
 
+def yazi-file-check [] {
+  if $nu.os-info.family == "windows" {
+    let git = (which git | get -o 0.path)
+    if $git == null {
+      return {app: "workspace", name: "file", status: "missing", target: "Git for Windows file.exe"}
+    }
+    let candidates = [
+      ($git | path dirname | path dirname | path join usr bin file.exe)
+      ($git | path dirname | path dirname | path dirname | path join usr bin file.exe)
+    ]
+    let file = ($candidates | where {|path| $path | path exists} | get -o 0)
+    return {app: "workspace", name: "file", status: (if $file != null { "ok" } else { "missing" }), target: ($file | default "Git for Windows file.exe")}
+  }
+  {app: "workspace", name: "file", status: (executable-status file), target: "file"}
+}
+
+
+def workspace-tool-checks [] {
+  [
+    {app: "workspace", name: "yazi", status: (executable-status yazi), target: "yazi"}
+    {app: "workspace", name: "lazygit", status: (executable-status lazygit), target: "lazygit"}
+    {app: "workspace", name: "delta", status: (executable-status delta), target: "delta"}
+    {app: "workspace", name: "ripgrep", status: (executable-status rg), target: "rg"}
+    {app: "workspace", name: "fd", status: (executable-status fd), target: "fd"}
+    {app: "workspace", name: "zoxide", status: (executable-status zoxide), target: "zoxide"}
+    (yazi-file-check)
+  ]
+}
+
+
 def "main doctor" [--strict] {
   let links = (selected-links | each {|entry|
     let result = (symlink status (resolve-target $entry) (resolve-source $entry))
@@ -206,11 +236,11 @@ def "main doctor" [--strict] {
       target: $target
     }]
   } else { [] }
-  let checks = ($links | append $starship_check | append $yazi_check | append $windows_terminal_checks | append (helix-tool-checks))
+  let checks = ($links | append $starship_check | append $yazi_check | append $windows_terminal_checks | append (helix-tool-checks) | append (workspace-tool-checks))
   print $checks
 
   let failures = ($checks | where status != "ok")
   if $strict and ($failures | is-not-empty) {
-    error make {msg: $"Doctor found ($failures | length) problem(s)"}
+    error make {msg: $"Doctor found ($failures | length) problems"}
   }
 }

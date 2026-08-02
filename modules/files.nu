@@ -14,10 +14,26 @@ def is-symbolic-link [link: path] {
   true
 }
 
+def create-windows-symbolic-link [link: path, original: path] {
+  # PowerShell New-Item can still demand elevation after Developer Mode is
+  # enabled. Windows mklink honors unprivileged symbolic-link creation and
+  # creates the same SymbolicLink reparse type required by this repository.
+  let result = if ($original | path type) == "dir" {
+    (^cmd /d /c mklink /D $link $original | complete)
+  } else {
+    (^cmd /d /c mklink $link $original | complete)
+  }
+  if $result.exit_code != 0 {
+    let detail = ([$result.stdout $result.stderr] | str join " " | str trim)
+    error make {msg: $"Failed to create Windows Symbolic Link: ($detail)"}
+  }
+}
+
+
 def assert-symlink-capability [original: path] {
   if $nu.os-info.family == "windows" {
     let probe = ($env.TEMP | path join $"nu-symlink-probe-(random chars -l 12)")
-    ^powershell -NoProfile -Command $"$ErrorActionPreference = 'Stop'; New-Item -ItemType SymbolicLink -Path '($probe)' -Target '($original)' | Out-Null"
+    create-windows-symbolic-link $probe $original
     rm $probe
   }
 }
@@ -98,7 +114,7 @@ export def symlink [link: path, original: path] {
   if $nu.os-info.family == "windows" {
     # Windows requires Developer Mode or elevation for symbolic links.
     # Fail explicitly rather than changing link semantics.
-    ^powershell -NoProfile -Command $"New-Item -ItemType SymbolicLink -Path '($link)' -Target '($original)' | Out-Null"
+    create-windows-symbolic-link $link $original
   } else {
     ^ln -s $original $link
   }

@@ -48,3 +48,25 @@ hx --health markdown
 ```
 
 注意：rustup 可能创建 `rust-analyzer` shim，但组件尚未安装；因此 doctor 会实际执行 `rust-analyzer --version`，而不只检查 PATH。
+
+## 文件与 Git 工作流
+
+Helix 保持专注于编辑、LSP 和搜索，外部 TUI 工具由 Zellij 承载：
+
+- Yazi 配置目录整体链接到仓库，并使用阻塞式 `hx` opener 编辑文本文件；`package.toml`、`flavors/` 和 `plugins/` 由 `ya pkg` 生成并被 Git 忽略；
+- LazyGit 作为待评估的 Git UI，不是仓库绑定的唯一选择；
+- Delta 提供 Catppuccin Latte 亮色 diff；
+- ripgrep、fd 与 zoxide 支持搜索和导航。
+
+当前不声明 Zellij `Alt` 快捷键。确定最终采用的文件管理和 Git 工具后，再添加快捷键或布局，避免过早耦合。
+
+Windows 的 Delta 推荐设置：
+
+```nu
+git config --global core.pager delta
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git config --global delta.light true
+git config --global delta.syntax-theme "Catppuccin Latte"
+git config --global merge.conflictStyle zdiff3
+```

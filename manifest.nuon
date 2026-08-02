@@ -38,17 +38,17 @@
     }
     {
       app: "yazi"
-      name: "yazi-theme-windows"
+      name: "yazi-config-windows"
       platforms: ["windows"]
-      source: ["yazi" "theme.toml"]
-      target: { base: "config" path: ["yazi" "config" "theme.toml"] }
+      source: ["yazi"]
+      target: { base: "config" path: ["yazi" "config"] }
     }
     {
       app: "yazi"
-      name: "yazi-theme-unix"
+      name: "yazi-config-unix"
       platforms: ["unix"]
-      source: ["yazi" "theme.toml"]
-      target: { base: "config" path: ["yazi" "theme.toml"] }
+      source: ["yazi"]
+      target: { base: "config" path: ["yazi"] }
     }
     {
       app: "zellij"

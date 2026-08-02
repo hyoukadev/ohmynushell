@@ -34,6 +34,22 @@ if $nu.os-info.name == "macos" {
 $env.EDITOR = "hx"
 $env.config.buffer_editor = "hx"
 
+# Yazi requires file(1) for MIME detection. Git for Windows ships it outside
+# the normal Windows PATH, so derive its location from the active Git binary.
+if $nu.os-info.family == "windows" {
+  let git = (which git | get -o 0.path)
+  if $git != null {
+    let candidates = [
+      ($git | path dirname | path dirname | path join usr bin file.exe)
+      ($git | path dirname | path dirname | path dirname | path join usr bin file.exe)
+    ]
+    let file = ($candidates | where {|path| $path | path exists} | get -o 0)
+    if $file != null {
+      $env.YAZI_FILE_ONE = $file
+    }
+  }
+}
+
 # Keep Python-based CLIs (such as Tavily) Unicode-safe on Windows.
 $env.PYTHONUTF8 = "1"
 
