@@ -1,7 +1,4 @@
 theme = Catppuccin Latte
 font-family = Maple Mono NF CN
 font-size = 12
-# GUI-launched Ghostty does not inherit Homebrew's PATH; Zellij and its Nu panes need it.
-env = PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-command = zellij
 keybind = global:cmd+backquote=toggle_quick_terminal
