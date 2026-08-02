@@ -25,8 +25,13 @@ path add ($nu.home-dir | path join .local bin)
 
 # Homebrew's default Apple Silicon locations.
 if $nu.os-info.name == "macos" {
-  path add /opt/homebrew/bin
+  # macOS may already append these paths after /usr/local/bin. Remove the
+  # inherited entries first so path add can reliably put Homebrew in front.
+  $env.PATH = ($env.PATH | where {|entry|
+    $entry not-in [/opt/homebrew/bin /opt/homebrew/sbin]
+  })
   path add /opt/homebrew/sbin
+  path add /opt/homebrew/bin
 }
 # source $"($nu.home-dir)/.cargo/env.nu"
 
