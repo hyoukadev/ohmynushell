@@ -3,6 +3,9 @@ font-family = Maple Mono NF CN
 font-size = 12
 keybind = global:cmd+backquote=toggle_quick_terminal
 
+# 下拉终端从屏幕底部向上滑出（默认 top 是从顶部向下滑）
+quick-terminal-position = bottom
+
 # 把 Option(⌥) 键作为 Alt/Meta，而不是 macOS 特殊字符输入键
 # 这样 Alt+F 不再输出 ƒ、Alt+方向键 在 Zellij 里也不再误触发 floating
 macos-option-as-alt = true
