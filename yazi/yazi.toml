@@ -1,6 +1,14 @@
 [mgr]
 show_hidden = true
 
+# macOS Finder 元数据没有应用认领，系统 open 会报 kLSApplicationNotFoundErr；
+# 让这类文件改走 reveal（在 Finder 中显示），Enter/l 不会再弹错误
+[open]
+prepend_rules = [
+  { url = "*.DS_Store", use = "reveal" },
+  { url = "._*", use = "reveal" },
+]
+
 [opener]
 edit = [
   { run = "hx %s", block = true, desc = "Helix" },
