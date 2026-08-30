@@ -5,3 +5,6 @@ show_hidden = true
 edit = [
   { run = "hx %s", block = true, desc = "Helix" },
 ]
+edit-pane = [
+  { run = "zellij run --name helix -- hx %s", block = false, desc = "Helix (Zellij pane)" },
+]

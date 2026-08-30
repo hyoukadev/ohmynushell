@@ -69,6 +69,13 @@ def apply-yazi-packages [] {
     ya pkg add yazi-rs/flavors:catppuccin-latte
   }
   print "✅ Yazi flavor: Catppuccin Latte"
+  for plugin in [smart-enter] {
+    let package = $"yazi-rs/plugins:($plugin)"
+    if not ($packages | any {|line| $line | str contains $package}) {
+      ya pkg add $package
+    }
+  }
+  print "✅ Yazi plugins: smart-enter"
 }
 
 
