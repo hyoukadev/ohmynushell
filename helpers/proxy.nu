@@ -10,16 +10,18 @@ export def --env "proxy on" [
     http_proxy: $http
     https_proxy: $http
     all_proxy: $socks
+    no_proxy: "localhost,127.0.0.1,::1"
     HTTP_PROXY: $http
     HTTPS_PROXY: $http
     ALL_PROXY: $socks
+    NO_PROXY: "localhost,127.0.0.1,::1"
   }
   print $"✅ Proxy enabled: HTTP=($http), SOCKS=($socks)"
 }
 
 # Disable proxy variables for the current Nushell process and its child processes.
 export def --env "proxy off" [] {
-  hide-env -i http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY
+  hide-env -i http_proxy https_proxy all_proxy no_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
   print "✅ Proxy disabled"
 }
 
