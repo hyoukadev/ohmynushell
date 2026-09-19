@@ -22,11 +22,17 @@ use std/util "path add"
 # User-level tool locations shared across platforms.
 path add ($nu.home-dir | path join .cargo bin)
 path add ($nu.home-dir | path join .local bin)
+path add ($nu.home-dir | path join go bin) # ~/go/bin：gopls/goimports 等 go install 工具（GOBIN 固定在此）
 
 # Homebrew's default Apple Silicon locations.
 if $nu.os-info.name == "macos" {
-  path add /opt/homebrew/bin
+  # macOS may already append these paths after /usr/local/bin. Remove the
+  # inherited entries first so path add can reliably put Homebrew in front.
+  $env.PATH = ($env.PATH | where {|entry|
+    $entry not-in [/opt/homebrew/bin /opt/homebrew/sbin]
+  })
   path add /opt/homebrew/sbin
+  path add /opt/homebrew/bin
 }
 # source $"($nu.home-dir)/.cargo/env.nu"
 
