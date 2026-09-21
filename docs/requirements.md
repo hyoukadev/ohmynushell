@@ -32,7 +32,7 @@
 
 ### 2.4 网络与环境变量
 
-- 代理不得在启动时无条件启用。
+- 代理仅在 Windows 启动时默认启用，其他平台保留继承的代理环境变量。
 - 提供 `proxy on`、`proxy off`、`proxy status`。
 - PATH 生成文件不得固化 AI Agent、MSYS 或项目临时目录。
 - Windows Python CLI 使用 UTF-8 模式。
@@ -63,5 +63,5 @@
 - Yazi 只保留 Latte flavor。
 - 配置中的终端统一选择 Maple Mono NF CN；Windows Terminal 使用 10pt，Alacritty/Ghostty 使用 12pt。
 - Windows Terminal 合并操作保留原 Profile 列表和 GUID。
-- 代理默认不由配置主动设置。
+- 仅 Windows 默认由配置设置代理，其他平台需显式执行 `proxy on` 才由配置设置。
 - `git diff --check` 和对应工具健康检查通过。

@@ -51,8 +51,10 @@ source ./helpers/python_uv.nu
 source ./helpers/normal.nu
 source ./helpers/proxy.nu
 
-# 默认开启代理(代理工具监听 10808)。临时关闭可在会话里执行: proxy off
-proxy on
+# 仅 Windows 默认开启代理(代理工具监听 10808)。临时关闭可在会话里执行: proxy off
+if $nu.os-info.family == "windows" {
+  proxy on
+}
 source ./themes/catppuccin_latte.nu
 
 

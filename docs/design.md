@@ -15,7 +15,7 @@
 5. 所有平台只使用 Symbolic Link，不降级为 Junction、HardLink 或 Copy。
 6. 不产生持久 `.bak`；替换实体目标前由 Agent 说明破坏性影响。
 7. 主题和字体使用官方内容，不手写近似值。
-8. 代理默认关闭，通过 `proxy on/off` 显式控制。
+8. 代理仅在 Windows 默认开启；其他平台保留继承的代理环境变量，通过 `proxy on/off` 显式控制。
 
 ## 3. 目录结构
 

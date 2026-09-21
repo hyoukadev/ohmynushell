@@ -90,7 +90,7 @@ nu setup.nu apply zellij
 
 ## 常用命令
 
-代理默认关闭：
+代理仅在 Windows 启动时默认开启（本地端口 10808）；macOS、Linux/WSL 和 Android/Termux 不自动开启，保留继承的代理环境变量。所有平台均可手动控制：
 
 ```nu
 proxy status

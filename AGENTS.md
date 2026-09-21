@@ -23,7 +23,7 @@ Converge the current machine to the declared state while preserving machine-spec
 | Terminal font | Maple Mono NF CN; Windows Terminal 10 pt, Alacritty/Ghostty 12 pt |
 | Terminal (Windows) | Windows Terminal; Alacritty optional |
 | Terminal (macOS/Linux) | Ghostty; Alacritty fallback |
-| Proxy | Disabled by default; explicit `proxy on/off` |
+| Proxy | Enabled by default on Windows only; manual `proxy on/off` on all platforms |
 
 ## Repository assumptions
 
@@ -105,7 +105,7 @@ Do not package the whole repository for a local Agent by default. Do not add Ser
 
 ## Proxy commands
 
-The configuration never enables a localhost proxy automatically:
+The configuration enables the localhost proxy automatically on Windows only. All platforms support manual control:
 
 ```nu
 proxy status
@@ -138,5 +138,5 @@ Also verify:
 - `STARSHIP_CONFIG` points to `starship/starship.toml`.
 - No Frappe or Macchiato references remain in active configuration.
 - Maple Mono NF CN is installed and selected by every configured terminal.
-- Localhost proxy variables are absent unless explicitly enabled.
+- Startup enables localhost proxy variables on Windows only; other platforms preserve inherited proxy settings.
 - Generated files and secrets remain ignored by Git.
